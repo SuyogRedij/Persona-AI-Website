@@ -31,7 +31,7 @@ export function PersonaSelector({ currentPersona, onSwitch }) {
                   {persona.name}
                   <span className="verified-badge"> ✓</span>
                 </p>
-                <p className="persona-skills">{persona.skills}</p>
+                <p className="persona-skills">{persona.tagline}</p>
               </div>
               {isActive && (
                 <span className="active-badge" style={{ color: persona.color }}>Active</span>

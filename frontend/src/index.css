@@ -236,7 +236,8 @@ body {
 
 .persona-skills {
   font-size: 11px;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: var(--card-accent, var(--text-muted));
   margin: 3px 0 0;
 }
 

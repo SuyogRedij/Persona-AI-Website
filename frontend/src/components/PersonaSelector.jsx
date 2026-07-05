@@ -19,7 +19,9 @@ export function PersonaSelector({ currentPersona, onSwitch }) {
           >
             <div className="persona-card-top">
               <div className="persona-avatar" style={{ background: persona.color }}>
-                {persona.initials}
+                {persona.image
+                  ? <img src={persona.image} alt={persona.name} className="persona-avatar-img" />
+                  : persona.initials}
               </div>
               <div>
                 <p className="persona-name">{persona.name}</p>
@@ -29,7 +31,6 @@ export function PersonaSelector({ currentPersona, onSwitch }) {
               </div>
               {isActive && <span className="active-badge" style={{ color: persona.color }}>Active</span>}
             </div>
-            <p className="persona-description">{persona.description}</p>
           </div>
         );
       })}

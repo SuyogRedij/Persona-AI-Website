@@ -9,7 +9,9 @@ export function MessageBubble({ message, persona, isLastStreaming }) {
     <div className={`message-bubble${isUser ? ' user' : ' assistant'}`}>
       {!isUser && (
         <div className="message-avatar" style={{ background: persona.color }}>
-          {persona.initials}
+          {persona.image
+            ? <img src={persona.image} alt={persona.name} className="persona-avatar-img" />
+            : persona.initials}
         </div>
       )}
       <div className="message-content">

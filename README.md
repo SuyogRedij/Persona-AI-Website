@@ -1,6 +1,8 @@
 # Persona AI — Chat with Hitesh & Piyush
 
-An AI-powered chat website that simulates conversations with two popular Indian tech educators: **Hitesh Choudhary** (Chai Aur Code) and **Piyush Garg** (@piyushgargdev). The AI uses carefully engineered system prompts to reproduce each person's communication style, teaching approach, and personality.
+An AI-powered chat website that simulates conversations with two popular Indian tech educators: **Hitesh Choudhary** (Chai Aur Code) and **Piyush Garg** (@piyushgargdev). The AI uses carefully engineered system prompts to reproduce each person's communication style, teaching approach, and personality. 
+
+Website link - https://persona-ai-website-6tna.vercel.app/
 
 ---
 

@@ -1,6 +1,6 @@
 # Persona AI — Chat with Hitesh & Piyush
 
-An AI-powered chat website that simulates conversations with two popular Indian tech educators: **Hitesh Choudhary** (Chai Aur Code) and **Piyush Garg** (@piyushgargdev). The AI uses carefully engineered system prompts to reproduce each person's communication style, teaching approach, and personality. 
+An AI-powered chat website that simulates conversations with two popular Indian tech educators: **Hitesh Choudhary** (Chai Aur Code) and **Piyush Garg** (@piyushgargdev). The AI uses carefully engineered system prompts to reproduce each person's communication style, teaching approach, and personality.
 
 Website link - https://persona-ai-website-6tna.vercel.app/
 
@@ -8,12 +8,18 @@ Website link - https://persona-ai-website-6tna.vercel.app/
 
 ## Features
 
-- Real-time streaming responses (Server-Sent Events)
-- Switch between Hitesh Choudhary and Piyush Garg personas
-- Markdown rendering with syntax-highlighted code blocks
-- Dark theme, responsive on mobile
-- Stop generation mid-response
-- Conversation history preserved per session
+- **Real-time streaming responses** via Server-Sent Events (SSE)
+- **Switch between personas** — Hitesh Choudhary and Piyush Garg
+- **Persona profile header** — real photo, subscriber count, online status, and skill tags per persona
+- **Suggested prompts** — clickable topic suggestions that refresh, shown before first message
+- **Dark / Light theme toggle** — persisted across sessions via localStorage
+- **Real profile photos** fetched from public GitHub avatars
+- **Message timestamps** on every message
+- **Markdown rendering** with syntax-highlighted code blocks
+- **Stop generation** mid-response with a single click
+- **Conversation history** preserved per session
+- **Model indicator** — GPT-4o-mini badge in the input bar
+- **Responsive layout** — adapts to mobile and tablet
 
 ---
 
@@ -93,10 +99,11 @@ Open **http://localhost:5173** in your browser.
 ## Usage
 
 1. **Select a persona** from the left sidebar — Hitesh Choudhary or Piyush Garg
-2. **Type your question** in the chat input and press **Enter** (or click Send)
+2. **Use a suggested prompt** or type your own question and press **Enter**
 3. Watch the response stream in real time
 4. **Switch personas** at any time — you'll be asked to confirm since it clears the conversation
 5. Click **■ Stop** to halt a response mid-stream
+6. **Toggle the theme** using the ☀️ / 🌙 button in the top-right corner
 
 ### What to ask
 
@@ -127,17 +134,19 @@ Persona AI website/
 │   └── package.json
 ├── frontend/
 │   ├── src/
-│   │   ├── App.jsx
+│   │   ├── App.jsx               Theme state + root layout
 │   │   ├── main.jsx
-│   │   ├── index.css
-│   │   ├── data/personas.js      UI metadata (names, colors, greetings)
-│   │   ├── hooks/useChat.js      SSE streaming + state management
+│   │   ├── index.css             CSS variables for dark/light themes + all styles
+│   │   ├── data/personas.js      Persona metadata (name, photo, tags, suggested prompts)
+│   │   ├── hooks/useChat.js      SSE streaming + message state + timestamps
 │   │   └── components/
-│   │       ├── Header.jsx
-│   │       ├── PersonaSelector.jsx
-│   │       ├── ChatWindow.jsx
-│   │       ├── MessageBubble.jsx
-│   │       └── ChatInput.jsx
+│   │       ├── Header.jsx        Top bar with logo and theme toggle
+│   │       ├── PersonaSelector.jsx   Sidebar cards with photo, verified badge, skills
+│   │       ├── PersonaHeader.jsx     Profile banner (photo, bio, tags, online status)
+│   │       ├── ChatWindow.jsx        Message list + auto-scroll
+│   │       ├── MessageBubble.jsx     Single message with markdown + timestamp
+│   │       ├── SuggestedPrompts.jsx  Clickable topic pills with refresh
+│   │       └── ChatInput.jsx         Textarea + model badge + send button
 │   ├── index.html
 │   ├── vite.config.js            Proxies /api → localhost:3001 in dev
 │   ├── vercel.json               Vercel SPA routing fix
@@ -173,6 +182,8 @@ Browser updates message bubble in real time
 - System prompt lives exclusively on the backend — never sent to the browser
 - Backend is stateless — frontend sends the full message history each request
 - Streaming uses native SSE over `fetch` + `ReadableStream` (no extra libraries)
+- Theme preference stored in `localStorage` under `persona-ai-theme`
+- Profile photos loaded from public GitHub avatar URLs (`github.com/<username>.png`)
 
 ---
 
@@ -208,10 +219,13 @@ Browser updates message bubble in real time
 ### Add a new persona
 1. Create `backend/src/personas/yourpersona.js` following the existing format
 2. Register it in `backend/src/personas/index.js`
-3. Add UI metadata in `frontend/src/data/personas.js`
+3. Add UI metadata in `frontend/src/data/personas.js` — include `name`, `subtitle`, `skills`, `tags`, `color`, `image`, `suggestedPrompts`, and `greeting`
 
 ### Change the model
 Edit `model` in the persona file (e.g. `'gpt-4o'` for higher quality, `'gpt-4o-mini'` for lower cost).
 
 ### Adjust context window
 Edit `maxContextMessages` in the persona file (default: 20).
+
+### Theming
+All colors are CSS variables in `frontend/src/index.css`. Dark theme is defined under `:root` / `[data-theme="dark"]`; light theme under `[data-theme="light"]`. Add or override variables there to customize either theme.

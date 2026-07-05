@@ -3,10 +3,18 @@ import { PERSONAS } from '../data/personas.js';
 
 const makeId = (prefix) => `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 
+const formatTime = () => {
+  const now = new Date();
+  const h = now.getHours() % 12 || 12;
+  const m = now.getMinutes().toString().padStart(2, '0');
+  const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
+  return `${h}:${m} ${ampm}`;
+};
+
 export function useChat() {
   const [currentPersona, setCurrentPersona] = useState(PERSONAS[0]);
   const [messages, setMessages] = useState(() => [
-    { id: 'greeting', role: 'assistant', content: PERSONAS[0].greeting },
+    { id: 'greeting', role: 'assistant', content: PERSONAS[0].greeting, timestamp: formatTime() },
   ]);
   const [isStreaming, setIsStreaming] = useState(false);
 
@@ -26,7 +34,7 @@ export function useChat() {
       abortControllerRef.current?.abort();
       setIsStreaming(false);
       setCurrentPersona(persona);
-      setMessages([{ id: 'greeting', role: 'assistant', content: persona.greeting }]);
+      setMessages([{ id: 'greeting', role: 'assistant', content: persona.greeting, timestamp: formatTime() }]);
     },
     [currentPersona.id, messages.length]
   );
@@ -35,7 +43,8 @@ export function useChat() {
     async (content) => {
       if (isStreaming || !content.trim()) return;
 
-      const userMsg = { id: makeId('user'), role: 'user', content };
+      const now = formatTime();
+      const userMsg = { id: makeId('user'), role: 'user', content, timestamp: now };
       const assistantId = makeId('assistant');
 
       // Snapshot current messages for the API call (before state updates)
@@ -44,7 +53,7 @@ export function useChat() {
       setMessages((prev) => [
         ...prev,
         userMsg,
-        { id: assistantId, role: 'assistant', content: '' },
+        { id: assistantId, role: 'assistant', content: '', timestamp: now },
       ]);
       setIsStreaming(true);
 

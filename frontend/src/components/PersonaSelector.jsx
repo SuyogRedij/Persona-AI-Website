@@ -18,18 +18,24 @@ export function PersonaSelector({ currentPersona, onSwitch }) {
             aria-pressed={isActive}
           >
             <div className="persona-card-top">
-              <div className="persona-avatar" style={{ background: persona.color }}>
-                {persona.image
-                  ? <img src={persona.image} alt={persona.name} className="persona-avatar-img" />
-                  : persona.initials}
+              <div className="persona-avatar-wrapper">
+                <div className="persona-avatar" style={{ background: persona.color }}>
+                  {persona.image
+                    ? <img src={persona.image} alt={persona.name} className="persona-avatar-img" />
+                    : persona.initials}
+                </div>
+                <span className="online-dot" />
               </div>
-              <div>
-                <p className="persona-name">{persona.name}</p>
-                <p className="persona-tagline" style={{ color: persona.color }}>
-                  {persona.tagline}
+              <div className="persona-card-info">
+                <p className="persona-name">
+                  {persona.name}
+                  <span className="verified-badge"> ✓</span>
                 </p>
+                <p className="persona-skills">{persona.skills}</p>
               </div>
-              {isActive && <span className="active-badge" style={{ color: persona.color }}>Active</span>}
+              {isActive && (
+                <span className="active-badge" style={{ color: persona.color }}>Active</span>
+              )}
             </div>
           </div>
         );

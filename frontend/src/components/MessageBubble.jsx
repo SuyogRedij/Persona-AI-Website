@@ -14,6 +14,10 @@ export function MessageBubble({ message, persona, isLastStreaming }) {
             : persona.initials}
         </div>
       )}
+      {isUser && (
+        <div className="message-avatar user-avatar">🤖</div>
+      )}
+
       <div className="message-content">
         <div
           className={`bubble${isUser ? ' user-bubble' : ' assistant-bubble'}`}
@@ -21,9 +25,7 @@ export function MessageBubble({ message, persona, isLastStreaming }) {
         >
           {isThinking ? (
             <div className="typing-dots">
-              <span />
-              <span />
-              <span />
+              <span /><span /><span />
             </div>
           ) : isUser ? (
             <p>{message.content}</p>
@@ -33,6 +35,13 @@ export function MessageBubble({ message, persona, isLastStreaming }) {
             </ReactMarkdown>
           )}
         </div>
+
+        {message.timestamp && (
+          <p className={`message-timestamp${isUser ? ' user-ts' : ''}`}>
+            {message.timestamp}
+          </p>
+        )}
+
       </div>
     </div>
   );

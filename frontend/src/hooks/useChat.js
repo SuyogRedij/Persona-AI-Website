@@ -57,9 +57,9 @@ export function useChat() {
       ]);
       setIsStreaming(true);
 
-      // Build the messages array to send: history + new user message (no greeting, no empty placeholder)
+      // Build the messages array to send: greeting + history + new user message (no empty placeholder)
       const apiMessages = [
-        ...historySnapshot.filter((m) => m.id !== 'greeting'),
+        ...historySnapshot,
         userMsg,
       ].map(({ role, content }) => ({ role, content }));
 
